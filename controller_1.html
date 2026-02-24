@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Controller</title>
+<style>
+    body {
+        background: linear-gradient(135deg, #f5f5f7, #e8ecf0);
+        font-family: "SF Pro Display", "Microsoft YaHei", sans-serif;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    h1 {
+        font-size: 2rem;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 30px;
+        color: #111;
+    }
+    button, .empty {
+            width: 100%;
+            height: 100%;
+        }
+        /* 按钮基础样式 */
+        button {
+        font-size: calc(2vw + 8px);
+        font-weight: 500;
+        border: none;
+        background: white;
+        color: #222;
+        border-radius: 15px;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        transition: all 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    button .icon {
+        font-size: calc(4vw + 12px);
+        margin-bottom: 6px;
+    }
+
+    button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    }
+
+    button:active {
+        transform: scale(0.95);
+        box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    }
+
+    /* 五宫布局模拟十字形遥控器 */
+    .controller {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        gap: 2vw; /* 间距自适应 */
+        width: 90vw; /* 占视口宽度的 90% */
+        height: 80vh; /* 占视口高度的 80% */
+        box-sizing: border-box;
+    }
+
+    /* 占位空格实现十字形布局 */
+    .empty {
+        width: 120px;
+        height: 120px;
+    }
+</style>
+</head>
+<body>
+
+<h1>🎮 遥控器</h1>
+
+<div class="controller">
+    <div class="empty"></div>
+    <button onclick="sendCommand('playfromweb')">
+        <div class="icon">▶️</div>
+        <div>播放</div>
+    </button>
+    <div class="empty"></div>
+
+    <button onclick="sendCommand('prevfromweb')">
+        <div class="icon">⏮</div>
+        <div>上一句</div>
+    </button>
+    <div class="empty"></div>
+    <button onclick="sendCommand('nextfromweb')">
+        <div class="icon">⏭</div>
+        <div>下一句</div>
+    </button>
+
+    <div class="empty"></div>
+    <button onclick="sendCommand('pausefromweb')">
+        <div class="icon">⏸</div>
+        <div>暂停</div>
+    </button>
+    <div class="empty"></div>
+</div>
+
+<script>
+function sendCommand(action) {
+    fetch('https://lyrixsnap.com/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            type: 'command',
+            payload: { action }
+        })
+    })
+    .then(res => res.json())
+    .then(data => console.log('✅ 命令已发送', data))
+    .catch(err => console.error('❌ 发送失败', err));
+}
+</script>
+
+</body>
+</html>
