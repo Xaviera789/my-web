@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>软件下载</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding-top: 40px;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .download-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        .download-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 25px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            background: #f9f9f9;
+        }
+
+        .download-item:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .download-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-info h3 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .file-info p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .file-size {
+            color: #999;
+            font-size: 12px;
+        }
+
+        .download-btn {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .download-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .file-info {
+                margin-bottom: 20px;
+            }
+
+            .header h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/index.html" class="back-btn">← 返回首页</a>
+    
+    <div class="container">
+        <div class="header">
+            <h1>软件下载</h1>
+            <p>在这里下载我们的应用程序</p>
+        </div>
+
+        <div class="download-section">
+            <div id="downloadList">
+                <!-- 下载项将通过JavaScript动态加载 -->
+                <div class="empty-state">
+                    <p>暂无可用下载</p>
+                    <p style="font-size: 14px;">请将exe文件上传到 downloads 文件夹</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 下载文件列表配置
+        // 当您上传exe文件后，请在这里添加文件信息
+        const downloadFiles = [
+            // 示例配置（请根据实际情况修改）
+            // {
+            //     name: "我的应用程序",
+            //     description: "应用程序的详细描述",
+            //     version: "1.0.0",
+            //     filename: "myapp.exe",
+            //     size: "10.5 MB"
+            // }
+        ];
+
+        function renderDownloads() {
+            const downloadList = document.getElementById('downloadList');
+            
+            if (downloadFiles.length === 0) {
+                downloadList.innerHTML = `
+                    <div class="empty-state">
+                        <p>暂无可用下载</p>
+                        <p style="font-size: 14px;">请将exe文件上传到 downloads 文件夹，并在 download.html 中配置文件信息</p>
+                    </div>
+                `;
+                return;
+            }
+
+            downloadList.innerHTML = downloadFiles.map(file => `
+                <div class="download-item">
+                    <div class="file-info">
+                        <h3>${file.name}</h3>
+                        <p>${file.description || ''}</p>
+                        <p>版本: ${file.version || '未知'}</p>
+                        <p class="file-size">文件大小: ${file.size || '未知'}</p>
+                    </div>
+                    <a href="/downloads/${file.filename}" class="download-btn" download>
+                        立即下载
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        // 页面加载时渲染下载列表
+        renderDownloads();
+    </script>
+</body>
+</html>

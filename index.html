@@ -65,6 +65,7 @@
     <div class="container">
         <button class="circle-btn" id="btnA">遥控器</button>
         <button class="circle-btn" id="btnB">提词器</button>
+        <button class="circle-btn" id="btnC">下载</button>
     </div>
 
     <script>
@@ -102,6 +103,13 @@
             addRippleEffect(e);
             setTimeout(() => {
                 window.location.href = "/login.html?redirect=/teleprompter.html";
+            }, 300);
+        });
+
+        document.getElementById("btnC").addEventListener("click", (e) => {
+            addRippleEffect(e);
+            setTimeout(() => {
+                window.location.href = "/download.html";
             }, 300);
         });
 
