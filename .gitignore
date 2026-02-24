@@ -1,0 +1,3 @@
+# 忽略 downloads 目录中的所有 .exe 文件
+downloads/**/*.exe
+downloads/*.exe
